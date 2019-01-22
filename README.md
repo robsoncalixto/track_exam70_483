@@ -1,7 +1,7 @@
 # Exam 70-483
-Repository created to be study guide for the
+Repository created to be study guide for the " Exam Programing in C#" 
 
-### topics
+### Topics
 
 1. Manage Program Flow 
     - [Delegate](docs/DELEGATE.md)
@@ -10,5 +10,5 @@ Repository created to be study guide for the
 4. Implement Data Access 
 
 
-[to know more about the exam](https://www.microsoft.com/en-us/learning/exam-70-483.aspx)
+[To know more about the exam](https://www.microsoft.com/en-us/learning/exam-70-483.aspx)
 
