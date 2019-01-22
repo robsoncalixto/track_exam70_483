@@ -1,5 +1,5 @@
 # Exam 70-483
-Repository created to be study guide for the " Exam Programing in C#" 
+Repository created to be study guide for the "Exam Programing in C#" 
 
 ### Topics
 

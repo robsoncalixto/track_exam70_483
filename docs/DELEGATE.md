@@ -1,10 +1,9 @@
 # Delegate 
-
 Delegate é um objeto que pode chamar um metódo, desde que o tipo de retorno e  
 parâmetros  de entrada seja identicos é possível que um metódo seja chamado pelo delegate.
 Pode-se dizer que um delegate tem um referência do metógo que lhe foi atribuído como no exemplo abaixo.
 
-## exemplo simples 
+### Criando um simples delegate
 ```csharp
 void Main(){	
     	transformar t = soma;	
@@ -83,3 +82,36 @@ class X
  => Console.WriteLine (percentComplete);
 }
 ```
+
+## Generic Delegate
+Um delegate também pode ter tipo genérico como segue no exemplo :
+
+```csharp
+public delegate T Transformer<T> (T arg);
+```
+
+Criado o tio genérico podemos utiliza-lo para passar qualquer tipo como parâmetro ou retorno como segue o exemplo.
+
+
+```csharp
+ 	public delegate T Transformer<T> (T arg);
+
+	public class Util
+	{
+		 public static void Transform<T> (T[] values, Transformer<T> t) {
+	 		for (int i = 0; i < values.Length; i++)
+	 		values[i] = t (values[i]);
+	 	}
+	}
+	static void Main() {
+		int[] values = { 1, 2, 3 };
+	 	Util.Transform (values, Square); // Hook in Square
+	 	foreach (int i in values)
+	 		Console.Write (i + " "); // 1 4 9
+	}
+	static int Square (int x) => x * x;
+```
+
+## Delegates Func e Action
+Com delegates genéricos é possível escrever delegates que sejam capaz de trabalhar com qualquer tipo de metódo.
+
