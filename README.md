@@ -1,5 +1,5 @@
 # Exam 70-483
-Repository created to be study guide for the "Exam Programing in C#" 
+Repositório criado com o intuito de registra o apredizado durante o estudo para a certificação "70-483 Programing in C#" 
 
 ### Topics
 
@@ -10,5 +10,5 @@ Repository created to be study guide for the "Exam Programing in C#"
 4. Implement Data Access 
 
 
-[To know more about the exam](https://www.microsoft.com/en-us/learning/exam-70-483.aspx)
+[Mais informações sobre o exame](https://www.microsoft.com/en-us/learning/exam-70-483.aspx)
 

@@ -1,50 +1,49 @@
 # Delegate 
-Delegate é um objeto que pode ser apontado para um metódo, levando consideração que o número de parâmetros,os tipo de retorno e os parâmetros de entrada precisam ser identicos para delegates com tipo pré-definido. Resumidamente o delegate é uma instância do metódo que lhe foi atribuido.
+Delegate é um objeto que pode conter a referência de um método, levando consideração que o número de parâmetros,os tipo de retorno e os parâmetros de entrada precisam ser identicos para Delegates com tipo pré-definido. Resumidamente o Delegate é uma instância do método que lhe foi atribuido e sua execução será em uma thread diferente da thread de excução no momento. Delegates são ótimas opções para evitar problemas com Cross-Threading que geralmente acontece quando tenta acessar um método ou propriedade de outra.
 
-### Criando um simples delegate
-
-```csharp
-void Main(){	
-   	MeuDelegate del = Dobro;
-   	int resultado = del(10);
-   	Console.WriteLine(result); //20
-}
-static int Dobro(int x) => x * 2;
-delegate int MeuDelegate(int x);
-```
-No exemplo acima o delegate **MeuDelegate** recebeu a instância do metódo **Dobro** e depois executa o metódo. A váriavel resultado está recendo uma soma executada pelo metódo **Dobro** que foi chamado pelo delegate, uma outra forma de executar o metódo atribuído seria utilizando o metódo **Invoke**.
-
-## Passando um delegate por parâmetro
-Podemos passar um delegate como parâmetro para um metódo. Chamamos o metódo que recebe um outro como parâmetro de higher-order function, na função que segue abaixo melhoraremos o primeiro exemplo passando um delegate como parâmetro.
+### Criando um simples Delegate
 
 ```csharp
-void Main()
-{	
-	int[] valores = {1,2,3};
-
-	Util.Transforme (values, Dobro);
-	foreach( int i in valores)
-		Console.WriteLine(i + " "); //2 4 6
-}
-
-static int Dobro(int x ) => x * 2;
-
-public delegate int meuDelegate(int x);
-
-public class Util {
-	public static void Transforme(int[] valores, meuDelegate del){
-			for(int i =0; i< valores.Length; i++)
-			    valores[i]= del(valores[i]);
+	void Main(){	
+		MeuDelegate del = Dobro;
+		int resultado = del(10);
+		Console.WriteLine(result); //20
 	}
-}
+	static int Dobro(int x) => x * 2;
+	Delegate int MeuDelegate(int x);
 ```
 
-O metódo **Transforme** espera receber um array e um delegate. Observando bem o código acima percebemos que estamos passando o metódo **Dobro** como parâmetro e não o delegate. Veja que a atribuição ao delegate é feita no momento em que passamos o metódo **Dobro**.
+No exemplo acima o Delegate **MeuDelegate** recebeu a instância do método **Dobro** e depois executa o método. A váriavel resultado está recendo uma soma executada pelo método **Dobro** que foi chamado pelo Delegate, uma outra forma de executar o método atribuído seria utilizando o método **Invoke**.
+
+## Passando um Delegate por parâmetro
+Podemos passar um Delegate como parâmetro para um método. Chamamos o método que recebe um outro como parâmetro de higher-order function, na função que segue abaixo melhoraremos o primeiro exemplo passando um Delegate como parâmetro.
+
+```csharp
+	void Main(){	
+		int[] valores = {1,2,3};
+
+		Util.Transforme (values, Dobro);
+		foreach( int i in valores)
+			Console.WriteLine(i + " "); //2 4 6
+	}
+
+	static int Dobro(int x ) => x * 2;
+
+	public delegate int meuDelegate(int x);
+
+	public class Util {
+		public static void Transforme(int[] valores, meuDelegate del){
+			for(int i =0; i< valores.Length; i++)
+				valores[i]= del(valores[i]);
+		}
+	}
+```
+
+O método **Transforme** espera receber um array e um Delegate . Observando bem o código acima percebemos que estamos passando o método **Dobro** como parâmetro e não o Delegate . Veja que a atribuição ao Delegate  é feita no momento em que passamos o método **Dobro**.
 
 ## Diferença entre instância e static
-
-Ao atribuir um metódo ao delegate podemos obter a informação de quem é sua instância e qual o metódo que lhe foi atribuído, entretanto, se o metódo foi static teremos uma referência apontando para **null**.
-No exemplo abaixo vemos que um metódo static tem como referência **null**, já para uma instância temos quem é o objeto a quem pertece o metódo e sua referência.
+Ao atribuir um método ao Delegate  podemos obter a informação de quem é sua instância e qual o método que lhe foi atribuído, entretanto, se o método foi static teremos uma referência apontando para **null**.
+No exemplo abaixo vemos que um método static tem como referência **null**, já para uma instância temos quem é o objeto a quem pertece o método e sua referência.
 
 ```csharp
 	public delegate void MeuDelegate();
@@ -69,67 +68,100 @@ No exemplo abaixo vemos que um metódo static tem como referência **null**, já
 	}
 ```
 
-----------------------------------------------------------------------------------------------------------------------------
+## Multicast Delegate
+Os Delegates tem a possibilidade de adicionar mais de um método como referência, porém, a execução é de acordo com a ordem ao qual foi adicionada os métodos. Seguindo o padrão que já analisamos anteriormente de tipo de dados de assinatura. No exemplo a seguir veremos como trabalhar com mais de um método.
 
-
-
-
-## Multiplos metódos
-Todo delegate pode receber um ou vários referências de metódos basta utilizar a combinação de operadores += para adicionar, a remoção é feita utilizando um conjunto de operadores também -=. 
-
-### Exemplos 
-Neste exemplo vamos imaginar que você criou um metódo que precisa realizar uma atividade demorada e é preciso um monitor para acompanhar.
-```csharp
-    public delegate void ProgressReporter (int percentComplete);
-	 static void Main()	 {
-		 ProgressReporter p = WriteProgressToConsole;
-		 p += WriteProgressToFile;
-		 Util.HardWork (p);
-	 }
- 	
-	static void WriteProgressToConsole (int percentComplete) => Console.WriteLine (percentComplete);
- 	static void WriteProgressToFile (int percentComplete) => Console.WriteLine ("Escrevendo em arquivo.");
-
-	public class Util
+```csharp 
+	delegate int MeuDelegate();
+	void Main()
 	{
-		 public static void HardWork (ProgressReporter p)
-		 {
-			 for (int i = 0; i <= 10; i++){
-		 		p (i * 10); // Invoke delegate
-		 		System.Threading.Thread.Sleep (100); // Simulate hard work
-		 	}
-		 }
+		MeuDelegate del = RetornaDez;
+		del += RetornaCem;
+		del += RetornaMil;
+		Console.WriteLine(del()); // 1000
+		del -= RetornaMil;
+		Console.WriteLine(del()); // 100
+		del += RetornaMil;
+		
+		foreach(int valor in RetornaTodosOsDelegates(del)) // 10 100 1000
+			Console.WriteLine(valor);
 	}
 
-
-## Generic Delegate
-Um delegate também pode ter tipo genérico como segue no exemplo :
-
-```csharp
-public delegate T Transformer<T> (T arg);
+	static List<int> RetornaTodosOsDelegates(MeuDelegate del){
+		List<int> valores = new List<int>();
+		foreach(MeuDelegate d in del.GetInvocationList())
+			valores.Add(d());
+		return valores;
+	}
 ```
 
-Criado o tio genérico podemos utiliza-lo para passar qualquer tipo como parâmetro ou retorno como segue o exemplo.
+No código de exemplo observamos que os operadores **+=** faz atribuição do método ao Delegat, já os operadores **-+** subtrair da pilha de execução do Delegate  o método. Podemos remover qualquer método pelo seu nome, mas ao executar sempre executamos o último que foi adicionado na pilha. Para execução de todos os métodos utilizamos o método **GetInvocationList** do objeto Delegate  que nos permite fazer um loop em todos os métodos da da pilha.
+
+## Func, Action e Predicate
+O .net tem alguns Delegates prontos para facilitar que não tenhamos a necessidade de criar para algumas atividades. Iremos analisar o uso dos Delegates **Function, Action e Predicate**.
+
+- **Func**
+O Delegate Func nos permite trabalhar com tipos de dados de retorno nos dand uma imensa possibilidade de aplicação. 
 
 ```csharp
- 	public delegate T Transformer<T> (T arg);
-
-	public class Util
+	void Main()
 	{
-		 public static void Transform<T> (T[] values, Transformer<T> t) {
-	 		for (int i = 0; i < values.Length; i++)
-	 		values[i] = t (values[i]);
-	 	}
+		Func<string, int, bool> MinhaFunc = StringEIntRetornandoBoleano; 
+		if(MinhaFunc("Robson",25))
+			Console.WriteLine("Func executado com sucesso!");
 	}
-	static void Main() {
-		int[] values = { 1, 2, 3 };
-	 	Util.Transform (values, Square); // Hook in Square
-	 	foreach (int i in values)
-	 		Console.Write (i + " "); // 1 4 9
+
+	static bool StringEIntRetornandoBoleano(string nome, int idade){
+		Console.WriteLine($"Nome : {nome} , idade : {idade}");
+		return true;
 	}
-	static int Square (int x) => x * x;
 ```
 
-## Delegates Func e Action
-Com delegates genéricos é possível escrever delegates que sejam capaz de trabalhar com qualquer tipo de metódo.
+- **Action**
+O Delegate Action encapsula um método void, um método que não retorna nada.
 
+```csharp
+	void Main(){
+
+		string[] nomes = new string[] {"Robson","Thiago","Pietro"};
+		
+		Action<string> acao = new Action<string>(Console.WriteLine);
+		Array.ForEach(nomes, acao);
+		
+		//Chamando um novo metodo
+		string[] nomesCompletos = new string[] {"Robson Calixto","Thiago Pereira","Pietro Silva"};
+		acao = ImprimirNomeNoConsole;
+		Array.ForEach(nomesCompletos, ImprimirNomeNoConsole);
+		
+		Console.WriteLine("Action executado com sucesso!");
+	}
+	static void ImprimirNomeNoConsole(string mensagem) => Console.WriteLine(mensagem);
+```
+
+- **Predicate**
+O Delegate Predicate nos permite passar apenas um parâmetro e retorna um boleano diferente do Func que retorna o tipo que desejar e Action que é um void.
+
+```csharp
+	void Main()
+	{
+		//Expressão lambda
+		Predicate<int> acao = objetoPredicate => true;
+		if(acao(25)) // retorna sempre true
+			Console.WriteLine("Novinho esse garoto!");
+		
+		//Metódo anônimo
+		Predicate<int> acao2 = objetoPredicate => true;
+		if(acao(25)) // retorna sempre true
+			Console.WriteLine("Continua novinho esse garoto!");
+		
+		//Método explicito
+		Predicate<int> acao3 = EhNovinho;
+		if(acao3(31))  
+			Console.WriteLine("É novinho!"); 
+		else 
+			Console.WriteLine("Não é novinho!");
+	}	
+	static bool EhNovinho(int idade) {	
+		return idade <= 30 ? true : false;
+	}
+```
