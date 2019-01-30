@@ -165,3 +165,12 @@ O Delegate Predicate nos permite passar apenas um parâmetro e retorna um bolean
 		return idade <= 30 ? true : false;
 	}
 ```
+
+## Closure 
+As Closure é um recurso muito utilizado em linguagens funcionais, que basicamente permite que uma função tenha acesso ao escopo da função mais externa. Este acesso pode ser desde variável, até outras closures declaradas dentro da mesma função. No C# antes da versão 7.0 as Closures só era possível através de Delegates. Como estamos verificando o que é possível realizar com os Delegates iremos deixar de lado o que tem de mais moderno na nova implemntação do C#.
+No C# o conceito de Closure como vemos em liguagens funcionais não funciona da mesma forma, pois o compilador tem o trabalho de incluir os métodos e as variáveis de acesso global do Método mais interno dentro de uma classe, tudo isso por debaixo dos panos para que não seja percepitível. No exemplo a seguir veremos como implementar uma closure e qual o seu resultado, após a compilação do mesmo.
+
+
+```
+
+```
